@@ -2,8 +2,7 @@
 
 int main()
 {
-    
-    std::cout << "Tema" << std::endl;
+    std::cout << "C++ Project" << std::endl;
 
     return 0;
 }

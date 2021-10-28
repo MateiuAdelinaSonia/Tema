@@ -1,7 +1,7 @@
 # CMake version
 cmake_minimum_required(VERSION 3.0)
 
-set(myproject "Tema")
+set(myproject "C++ Project")
 # Project name
 project(${myproject})
 
