@@ -13,7 +13,21 @@ class Car {
     std::string creator;
 
     public:
-        Car(std::string color, std::string mark, std::string carNumber, double power, int doorNumber, int year, bool sport, bool automaticCar) {
+
+        Car() : color("red"), mark("Toyota"), carNumber("B 00 CAR"), power(90), doorNumber(4), year(1990), sport(0), automaticCar(0) {}
+
+        Car(const Car& car) {
+            color = std::move(car.color);
+            mark = std::move(car.mark);
+            carNumber = std::move(car.carNumber);
+            power = car.power;
+            doorNumber = car.doorNumber;
+            year = car.year;
+            sport = car.sport;
+            automaticCar = car.automaticCar;
+        }
+
+        Car(std::string color, std::string mark, std::string carNumber, double power, int doorNumber, int year, bool sport = 0, bool automaticCar = 0) {
             this->color = std::move(color);
             this->mark = std::move(mark);
             this->carNumber = std::move(carNumber);
