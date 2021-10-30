@@ -15,6 +15,11 @@ class Car : public Vehicle
 
         Car() : Vehicle(), power(90), doorNumber(4), year(1990), sport(0), automaticCar(0) {}
 
+        Car(Car&& source) : creator { source.creator }
+        {
+            source.creator = nullptr;
+        }
+        
         Car(const Car& car) 
         {
             color = std::move(car.color);
