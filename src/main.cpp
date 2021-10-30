@@ -33,7 +33,7 @@ int main()
     readFromDatabase();
 
     carsArray[1]->setCreator(CURENT_USER);
-    carsArray[1]->printCar();
+    carsArray[1]->printVehicle();
 
     return 0;
 }
