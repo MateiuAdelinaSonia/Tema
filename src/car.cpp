@@ -1,17 +1,17 @@
 #include <iostream>
 #include <string>
 #include "vehicle.cpp"
+#define CURENT_USER "admin"
 
 class Car : public Vehicle
 {
-    double power;
-    int doorNumber;
-    int year;
-    bool sport;
-    bool automaticCar;
-    std::string creator;
-
-    public:
+    public: 
+        double power;
+        int doorNumber;
+        int year;
+        bool sport;
+        bool automaticCar;
+        std::string creator = CURENT_USER;
 
         Car() : Vehicle(), power(90), doorNumber(4), year(1990), sport(0), automaticCar(0) {}
 
@@ -39,13 +39,13 @@ class Car : public Vehicle
             this->automaticCar = automaticCar;
         }
 
-        void setCreator(std::string creatorName) 
-        {
-            this->creator = std::move(creatorName);
-        }
-
         void printVehicle() 
         {
             std::cout << "Added by: " <<  this->creator  << " -> Car: color = " << color << " mark = " << mark << " vehicleNumber = " << vehicleNumber << " power " << power << " doorNumber " << doorNumber << " year = " << year << " sport = " << sport << " automaticCar = " << automaticCar << std::endl;
         }
 };
+
+std::ostream& operator<<(std::ostream& op, const Car& obj) 
+{
+    return op << "Added by: " << obj.creator << " -> Car: color = " << obj.color << " mark = " << obj.mark << " vehicleNumber = " << obj.vehicleNumber << " power " << obj.power << " doorNumber " << obj.doorNumber << " year = " << obj.year << " sport = " << obj.sport << " automaticCar = " << obj.automaticCar << std::endl;
+}

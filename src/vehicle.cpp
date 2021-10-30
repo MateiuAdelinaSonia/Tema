@@ -3,7 +3,7 @@
 
 class Vehicle
 {
-    protected: 
+    public: 
         std::string color;
         std::string mark;
         std::string vehicleNumber;

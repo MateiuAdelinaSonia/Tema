@@ -3,7 +3,6 @@
 #include <string>
 #include <map>
 #include "car.cpp"
-#define CURENT_USER "admin"
 #define DATABASE_NAME "db.txt"
 
 std::map<int, Car*> carsArray;
@@ -32,8 +31,8 @@ int main()
 {
     readFromDatabase();
 
-    carsArray[1]->setCreator(CURENT_USER);
     carsArray[1]->printVehicle();
+    std::cout << *carsArray[1];
 
     return 0;
 }
