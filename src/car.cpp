@@ -4,7 +4,7 @@
 class Car {
     std::string color;
     std::string mark;
-    int carNumber;
+    std::string carNumber;
     double power;
     int doorNumber;
     int year;
@@ -13,10 +13,10 @@ class Car {
     std::string creator;
 
     public:
-        Car(std::string color, std::string mark, int carNumber, double power, int doorNumber, int year, bool sport, bool automaticCar) {
-            this->color = color;
-            this->mark = mark;
-            this->carNumber = carNumber;
+        Car(std::string color, std::string mark, std::string carNumber, double power, int doorNumber, int year, bool sport, bool automaticCar) {
+            this->color = std::move(color);
+            this->mark = std::move(mark);
+            this->carNumber = std::move(carNumber);
             this->power = power;
             this->doorNumber = doorNumber;
             this->year = year;
