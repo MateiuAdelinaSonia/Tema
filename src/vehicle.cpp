@@ -11,5 +11,5 @@ class Vehicle
     public:
         virtual void printVehicle() = 0;
 
-        Vehicle() : color("red"), mark("Toyota"), vehicleNumber("B 00 CAR") {}
+        Vehicle() : color("Red"), mark("Toyota"), vehicleNumber("B-00-CAR") {}
 };

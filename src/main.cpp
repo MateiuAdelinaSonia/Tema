@@ -72,8 +72,6 @@ int main()
     int year;
     bool sport;
     bool automaticCar;
-
-    Car *car1 = new Car(color, mark, carNumber, power, doorNumber, year, sport, automaticCar);
     
     int option;
 
