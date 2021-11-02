@@ -35,7 +35,7 @@ void MainScreen()
 
 void Menu()
 {    
-    std::cout << "Your option:" << std::endl << std::endl << "1. AddCar" << std::endl << "2. ShowCars" << std::endl << "3. CloneCar" << std::endl << "4. MoveCarProperties" << std::endl << "5. SearchCar" << std::endl << "6. Exit" << std::endl << std::endl;
+    std::cout << "Your option:" << std::endl << std::endl << "1. AddCar" << std::endl << "2. ShowCars" << std::endl << "3. CloneCar" << std::endl << "4. SearchCar" << std::endl << "5. Exit" << std::endl << std::endl;
 }
 
 void insertCar(Car *car) {
@@ -80,9 +80,8 @@ int main()
     const int AddCar = 1;
     const int ShowCars = 2;
     const int CloneCar = 3;
-    const int MoveCarProperties = 4;
-    const int SearchCar = 5;
-    const int Exit = 6;
+    const int SearchCar = 4;
+    const int Exit = 5;
     
     do
     {
@@ -184,12 +183,6 @@ int main()
                     std::cout << "Your clone:" << std::endl;
                     newCar.printVehicle();
                     insertCar(&newCar);
-                }
-                break;
-
-                case MoveCarProperties:
-                {
-                    
                 }
                 break;
                 
