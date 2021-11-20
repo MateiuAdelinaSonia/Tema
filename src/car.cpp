@@ -21,10 +21,6 @@ class Car : public Vehicle
             source.creator = nullptr;
         }
 
-        void setCarPower(double carPower) {
-            this->power = carPower;
-        }
-
         Car& operator=(const Car& car)
         {
             if (this == &car) 
