@@ -62,6 +62,22 @@ void showCars()
 
 int main()
 {
+    std::cout << "Assignment operator:" << std::endl;
+    Car a;
+    Car b;
+    Car c;
+    Car d("Yellow", "BMW", "B-12-SSM", 6000, 3, 2019, 1, 0);
+    
+    std::cout << "Cars before assignment:" << std::endl;
+    std::cout << a << b << c << d;
+
+    a = b = c = d;
+    std::cout << std::endl << "Cars after assignment:" << std::endl;
+    std::cout << a << b << c << d;
+
+    std::cout << std::endl << "Assignment to self:" << std::endl;
+    d = std::move(d);
+
     readFromDatabase();
 
     std::string color;

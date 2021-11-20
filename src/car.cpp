@@ -13,7 +13,7 @@ class Car : public Vehicle
         bool automaticCar;
         std::string *creator = new std::string(CURENT_USER);
 
-        Car() : Vehicle(), power(90), doorNumber(4), year(1990), sport(0), automaticCar(0) {}
+        Car() : Vehicle(), power(1400), doorNumber(5), year(1999), sport(0), automaticCar(0) {}
 
         Car(Car&& source) : creator { source.creator }
         {
