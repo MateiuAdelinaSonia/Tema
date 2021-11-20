@@ -30,6 +30,12 @@ class Car : public Vehicle
 
         Car& operator=(const Car& car)
         {
+            if (this == &car) 
+            {
+                std::cout << "Self assignment operator identity test!" << std::endl;
+                return *this;
+            }
+
             power = car.power;
 
             return *this;
