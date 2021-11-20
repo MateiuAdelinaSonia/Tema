@@ -21,14 +21,28 @@ class Car : public Vehicle
             source.creator = nullptr;
         }
 
-        // Disable Copy Assingment Operator for Car
-        Car& operator=(const Car&) = delete;
+        void setCarPower(double carPower) {
+            this->power = carPower;
+        }
+
+        // // Disable Copy Assingment Operator for Car
+        // Car& operator=(const Car&) = delete;
+
+        Car& operator=(const Car& car)
+        {
+            power = car.power;
+
+            return *this;
+        }
 
         Car(const Car& car) 
         {
             color = std::move(car.color);
             mark = std::move(car.mark);
             vehicleNumber = std::move(car.vehicleNumber);
+
+            //Vehicle(car);
+
             power = car.power;
             doorNumber = car.doorNumber;
             year = car.year;
