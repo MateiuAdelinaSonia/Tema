@@ -25,9 +25,6 @@ class Car : public Vehicle
             this->power = carPower;
         }
 
-        // // Disable Copy Assingment Operator for Car
-        // Car& operator=(const Car&) = delete;
-
         Car& operator=(const Car& car)
         {
             if (this == &car) 
@@ -41,19 +38,15 @@ class Car : public Vehicle
             return *this;
         }
 
-        Car(const Car& car) 
+        Car(const Car& car) : Vehicle(car)
         {
-            color = std::move(car.color);
-            mark = std::move(car.mark);
-            vehicleNumber = std::move(car.vehicleNumber);
-
-            //Vehicle(car);
-
             power = car.power;
             doorNumber = car.doorNumber;
             year = car.year;
             sport = car.sport;
             automaticCar = car.automaticCar;
+
+            std::cout << "Car derived copy-constructor called!" << std::endl;
         }
 
         Car(std::string color, std::string mark, std::string vehicleNumber, double power, int doorNumber, int year, bool sport = 0, bool automaticCar = 0) 
