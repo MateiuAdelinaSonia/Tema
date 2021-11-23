@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 #include <map>
-#include "src/car.cpp"
+#include "car.cpp"
 #define DATABASE_NAME "db.txt"
 
 std::map<int, Car*> carsArray;

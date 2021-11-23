@@ -29,7 +29,13 @@ class Car : public Vehicle
                 return *this;
             }
 
+            Vehicle::operator=(car);
+
             power = car.power;
+            doorNumber = car.doorNumber;
+            year = car.year;
+            sport = car.sport;
+            automaticCar = car.automaticCar;
 
             return *this;
         }
