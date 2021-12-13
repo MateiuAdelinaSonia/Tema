@@ -2,10 +2,19 @@
 #include <fstream>
 #include <string>
 #include <map>
+#include <memory>
+#include <thread>
+#include <mutex>
 #include "car.cpp"
+#include "driver.cpp"
 #define DATABASE_NAME "db.txt"
 
-std::map<int, Car*> carsArray;
+std::mutex m;
+
+std::map<int, std::shared_ptr<Car>> carsArray;
+std::map<int, std::unique_ptr<Driver>> carDriver;
+
+int driverAssignedTo;
 
 void readFromDatabase() 
 {
@@ -23,7 +32,7 @@ void readFromDatabase()
 
     while (database >> carId >> color >> mark >> carNumber >> power >> doorNumber >> year >> sport >> automaticCar) 
     {
-        Car *carData = new Car(color, mark, carNumber, power, doorNumber, year, sport, automaticCar);
+        std::shared_ptr<Car> carData = std::make_shared<Car>(color, mark, carNumber, power, doorNumber, year, sport, automaticCar);
         carsArray.insert(std::make_pair(carId, carData));
     }
 }
@@ -38,10 +47,10 @@ void Menu()
     std::cout << "Your option:" << std::endl << std::endl << "1. AddCar" << std::endl << "2. ShowCars" << std::endl << "3. CloneCar" << std::endl << "4. SearchCar" << std::endl << "5. Exit" << std::endl << std::endl;
 }
 
-void insertCar(Car *car) {
+void insertCar(Car car) {
     int carId = (--carsArray.end())->first;
     std::ofstream database(DATABASE_NAME);
-    carsArray.insert(std::make_pair((++carId), car));
+    carsArray.insert(std::make_pair((++carId), std::make_shared<Car>(car)));
 
     for (const auto &carElement : carsArray)
     {
@@ -58,6 +67,50 @@ void showCars()
     {
         std::cout << carElement.first << " " << *carElement.second;
     }
+}
+
+void assignDriver(int carId) 
+{
+    m.lock();
+
+    if (carsArray.find(carId) == carsArray.end()) 
+    {
+        std::cout << "Car Id not found" << std::endl;
+        return;
+    }
+
+    std::unique_ptr<Driver> vipDriver = std::make_unique<Driver>("Foo", "Bar", 50);
+
+    // If the driver is already assigned to another car we transfer it
+    if (driverAssignedTo) 
+    {
+        carDriver[carId] = std::move(carDriver[driverAssignedTo]);
+    } 
+    else 
+    {
+        carDriver[carId] = std::move(vipDriver);
+    }
+
+    driverAssignedTo = carId;
+
+    m.unlock();
+}
+
+void showDriverDetails() 
+{
+    m.lock();
+
+    if (driverAssignedTo) 
+    {
+        std::cout << (*carDriver[driverAssignedTo]).name << " " << (*carDriver[driverAssignedTo]).surname << " is driving car ";
+        std::cout << driverAssignedTo << std::endl;
+    } 
+    else 
+    {
+        std::cout << "The driver is not assigned to any car" << std::endl;
+    }
+
+    m.unlock();
 }
 
 int main()
@@ -79,6 +132,28 @@ int main()
     d = std::move(d);
 
     readFromDatabase();
+    
+    // Before unique_ptr 
+
+    std::thread t0(showDriverDetails);
+
+    std::thread t1(assignDriver, 1);
+    std::thread t2(showDriverDetails);
+    
+    std::thread t3(assignDriver, 3);
+
+    // this throws a segmentation fault as we moved the unique_ptr driver to another car
+    // std::cout << (*carDriver[1]).name << std::endl; 
+
+    std::thread t4(showDriverDetails);
+
+    t0.join();
+    t1.join();
+    t2.join();
+    t3.join();
+    t4.join();
+
+    // After unique_ptr
 
     std::string color;
     std::string mark;
@@ -141,7 +216,7 @@ int main()
                         std::cout << "Automatic car:" << std::endl;
                         std::cin >> automaticCar;
 
-                        Car *car = new Car(color, mark, carNumber, power, doorNumber, year, sport, automaticCar);
+                        Car car(color, mark, carNumber, power, doorNumber, year, sport, automaticCar);
 
                         insertCar(car);
                     }
@@ -160,14 +235,13 @@ int main()
                         std::cout << "Car year:" << std::endl;
                         std::cin >> year;
 
-                        Car *car = new Car(color, mark, carNumber, power, doorNumber, year);
+                        Car car(color, mark, carNumber, power, doorNumber, year);
 
                         insertCar(car);
                     }
                     else 
                     {
-                        Car *car = new Car();
-
+                        Car car;
                         insertCar(car);
                     }
                 }
@@ -193,10 +267,12 @@ int main()
                         break;
                     }
                     
-                    Car newCar(*carsArray[carId]);
+                    std::shared_ptr<Car> newCar = carsArray[carId];
+                    std::cout << "New car shared pointer use count: " << newCar.use_count() << std::endl;
+                    //Car newCar(*carsArray[carId]);
                     std::cout << "Your clone:" << std::endl;
-                    newCar.printVehicle();
-                    insertCar(&newCar);
+                    newCar->printVehicle();
+                    insertCar(*newCar);
                 }
                 break;
                 
@@ -211,10 +287,10 @@ int main()
                         break;
                     }
                     
-                    Car searchSomething = *carsArray[searchCarId];
-                    Car searchCar = std::move(searchSomething);
-                    searchSomething.printVehicle();
-                    searchCar.printVehicle(true);
+                    std::shared_ptr<Car> searchSomething = carsArray[searchCarId];
+                    searchSomething->printVehicle();
+                    std::shared_ptr<Car> searchCar = std::move(searchSomething);
+                    searchCar->printVehicle(true);
                 }
                 break;
             }

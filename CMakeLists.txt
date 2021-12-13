@@ -16,6 +16,8 @@ else()
     endif()    
 endif()    
 
+set(CMAKE_CXX_FLAGS -pthread)
+
 # Define the executable
 add_subdirectory(src)
 add_executable(${PROJECT_NAME} main.cpp)
