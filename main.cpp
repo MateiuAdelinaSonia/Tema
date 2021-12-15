@@ -7,6 +7,7 @@
 #include <mutex>
 #include "car.cpp"
 #include "driver.cpp"
+#include "lock.cpp"
 #define DATABASE_NAME "db.txt"
 
 std::mutex m;
@@ -71,7 +72,7 @@ void showCars()
 
 void assignDriver(int carId) 
 {
-    m.lock();
+    Lock flag(&m);
 
     if (carsArray.find(carId) == carsArray.end()) 
     {
@@ -92,14 +93,12 @@ void assignDriver(int carId)
     }
 
     driverAssignedTo = carId;
-
-    m.unlock();
+    std::cout << "Driver is assigned" << std::endl;
 }
 
 void showDriverDetails() 
 {
-    m.lock();
-
+    Lock flag(&m);
     if (driverAssignedTo) 
     {
         std::cout << (*carDriver[driverAssignedTo]).name << " " << (*carDriver[driverAssignedTo]).surname << " is driving car ";
@@ -109,8 +108,6 @@ void showDriverDetails()
     {
         std::cout << "The driver is not assigned to any car" << std::endl;
     }
-
-    m.unlock();
 }
 
 int main()
